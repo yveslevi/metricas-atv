@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("metricas-atv")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c59ac095dcf816d36c0c1e1798a8b48f464d0b6e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b3ac445febbb6ba20314e1487f6f1d0f3f8b738")]
 [assembly: System.Reflection.AssemblyProductAttribute("metricas-atv")]
 [assembly: System.Reflection.AssemblyTitleAttribute("metricas-atv")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

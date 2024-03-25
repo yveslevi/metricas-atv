@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj": {}
+    "c:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj": {}
   },
   "projects": {
-    "C:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj": {
+    "c:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj",
+        "projectUniqueName": "c:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj",
         "projectName": "metricas-atv",
-        "projectPath": "C:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj",
+        "projectPath": "c:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\metricas-atv.csproj",
         "packagesPath": "C:\\Users\\YvesLapa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\obj\\",
+        "outputPath": "c:\\Users\\YvesLapa\\source\\repos\\yveslevi\\metricas-atv\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\YvesLapa\\AppData\\Roaming\\NuGet\\NuGet.Config",

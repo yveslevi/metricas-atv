@@ -1,37 +1,38 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+
+// Seu código de configuração OpenTelemetry começa aqui
+var tracingOtlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
+var otel = builder.Services.AddOpenTelemetry();
+
+// Configure OpenTelemetry Resources com o nome da aplicação
+otel.ConfigureResource(resource => resource
+    .AddService(serviceName: builder.Environment.ApplicationName));
 
 // Custom metrics for the application
 var greeterMeter = new Meter("OtPrGrYa.Example", "1.0.0");
-var countGreetings = greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
 
 // Custom ActivitySource for the application
 var greeterActivitySource = new ActivitySource("OtPrGrJa.Example");
 
-var tracingOtlpEndpoint = builder.Configuration["https://localhost:7275"];
-var otel = builder.Services.AddOpenTelemetry();
-
-// Configure OpenTelemetry Resources with the application name
-otel.ConfigureResource(resource => resource
-    .AddService(serviceName: builder.Environment.ApplicationName));
-
-// Add Metrics for ASP.NET Core and our custom metrics and export to Prometheus
+// Adiciona Métricas
 otel.WithMetrics(metrics => metrics
-    // Metrics provider from OpenTelemetry
     .AddAspNetCoreInstrumentation()
     .AddMeter(greeterMeter.Name)
-    // Metrics provides by ASP.NET Core in .NET 8
     .AddMeter("Microsoft.AspNetCore.Hosting")
     .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
     .AddPrometheusExporter());
 
-// Add Tracing for ASP.NET Core and our custom ActivitySource and export to Jaeger
+// Adiciona Rastreamento
 otel.WithTracing(tracing =>
 {
     tracing.AddAspNetCoreInstrumentation();
@@ -50,7 +51,13 @@ otel.WithTracing(tracing =>
     }
 });
 
-string SendGreeting(ILogger<Program> logger)
+var app = builder.Build();
+
+app.MapPrometheusScrapingEndpoint();
+
+app.MapGet("/", SendGreeting);
+
+async Task<String> SendGreeting(ILogger<Program> logger)
 {
     // Create a new Activity scoped to the method
     using var activity = greeterActivitySource.StartActivity("GreeterActivity");
@@ -58,17 +65,13 @@ string SendGreeting(ILogger<Program> logger)
     // Log a message
     logger.LogInformation("Sending greeting");
 
-    // Increment the custom counter
-    countGreetings.Add(1);
+    var greeterCounter = greeterMeter.CreateCounter<int>("greetings.count");
+    greeterCounter.Add(1);
 
     // Add a tag to the Activity
     activity?.SetTag("greeting", "Hello World!");
 
     return "Hello World!";
 }
-
-app.MapGet("/", SendGreeting);
-
-app.MapPrometheusScrapingEndpoint();
 
 app.Run();
